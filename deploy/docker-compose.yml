@@ -1,0 +1,55 @@
+services:
+  intra-authenticator:
+    build:
+      context: ../../intra-authenticator
+      dockerfile: deploy/Dockerfile
+
+    image: intra-authenticator:latest
+    container_name: intra-authenticator
+
+    restart: unless-stopped
+
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      AUTH_CREDENTIALS_FILE: /config/credentials.txt
+
+    volumes:
+      - /opt/intranet/config:/config:ro
+
+    ports:
+      - "9091:9091"
+
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:9091/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
+
+  intra-welcome:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+
+      args:
+        VITE_BASE_PATH: /
+        VITE_AUTH_API_URL: ""
+
+    image: intra-welcome-app:latest
+    container_name: intra-welcome
+
+    restart: unless-stopped
+
+    ports:
+      - "3000:80"
+
+    depends_on:
+      intra-authenticator:
+        condition: service_healthy
+
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
