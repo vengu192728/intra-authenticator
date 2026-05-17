@@ -12,9 +12,14 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: docker
       AUTH_CREDENTIALS_FILE: /config/credentials.txt
+      # Optional: add your UI origin if not covered by LAN patterns above
+      # AUTH_CORS_ALLOWED_ORIGINS: http://192.168.0.105:3000
 
     volumes:
       - /opt/intranet/config:/config:ro
+
+    networks:
+      - intranet
 
     ports:
       - "9091:9091"
@@ -47,9 +52,16 @@ services:
       intra-authenticator:
         condition: service_healthy
 
+    networks:
+      - intranet
+
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
       interval: 30s
       timeout: 5s
       retries: 3
       start_period: 10s
+
+networks:
+  intranet:
+    name: intranet

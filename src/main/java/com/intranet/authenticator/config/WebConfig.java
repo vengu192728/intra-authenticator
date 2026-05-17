@@ -13,13 +13,20 @@ public class WebConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                String[] origins = authProperties.getCors().getAllowedOrigins()
-                        .toArray(String[]::new);
-                registry.addMapping("/api/**")
-                        .allowedOrigins(origins.length > 0 ? origins : new String[]{"*"})
+                var cors = authProperties.getCors();
+                var registration = registry.addMapping("/api/**")
                         .allowedMethods("GET", "POST", "OPTIONS")
                         .allowedHeaders("*")
                         .maxAge(3600);
+
+                if (!cors.getAllowedOriginPatterns().isEmpty()) {
+                    registration.allowedOriginPatterns(
+                            cors.getAllowedOriginPatterns().toArray(String[]::new));
+                } else if (!cors.getAllowedOrigins().isEmpty()) {
+                    registration.allowedOrigins(cors.getAllowedOrigins().toArray(String[]::new));
+                } else {
+                    registration.allowedOriginPatterns("*");
+                }
             }
         };
     }

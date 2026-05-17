@@ -29,6 +29,7 @@ public class AuthProperties {
 
     public static class Cors {
         private List<String> allowedOrigins = new ArrayList<>();
+        private List<String> allowedOriginPatterns = new ArrayList<>();
 
         public List<String> getAllowedOrigins() {
             return allowedOrigins;
@@ -36,6 +37,14 @@ public class AuthProperties {
 
         public void setAllowedOrigins(List<String> allowedOrigins) {
             this.allowedOrigins = allowedOrigins;
+        }
+
+        public List<String> getAllowedOriginPatterns() {
+            return allowedOriginPatterns;
+        }
+
+        public void setAllowedOriginPatterns(List<String> allowedOriginPatterns) {
+            this.allowedOriginPatterns = allowedOriginPatterns;
         }
     }
 }
