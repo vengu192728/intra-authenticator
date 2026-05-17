@@ -1,0 +1,2 @@
+auth:
+  credentials-file: classpath:credentials-test.txt

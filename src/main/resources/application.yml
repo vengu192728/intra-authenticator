@@ -1,0 +1,14 @@
+server:
+  port: 9091
+
+spring:
+  application:
+    name: intra-authenticator
+
+auth:
+  credentials-file: ${AUTH_CREDENTIALS_FILE:./config/credentials.txt}
+  cors:
+    allowed-origins:
+      - http://localhost:5173
+      - http://localhost:4173
+      - http://127.0.0.1:5173

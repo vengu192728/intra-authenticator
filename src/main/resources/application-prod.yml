@@ -1,0 +1,6 @@
+# Use on the intranet server: java -jar intra-authenticator.jar --spring.profiles.active=prod
+auth:
+  cors:
+    allowed-origins:
+      - https://intranet.example.local
+      - http://intranet.example.local

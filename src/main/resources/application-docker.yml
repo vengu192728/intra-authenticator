@@ -1,0 +1,6 @@
+# Active with SPRING_PROFILES_ACTIVE=docker (see deploy/docker-compose.yml)
+auth:
+  cors:
+    allowed-origins:
+      - http://localhost:8080
+      - http://127.0.0.1:8080
